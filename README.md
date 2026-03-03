@@ -61,6 +61,31 @@ npm run dev
 - **LLMs.txt**: `/llms.txt`
 - **Robots.txt**: `/robots.txt`
 
+## 開発進捗
+
+### Night 1 (2026-03-04) - 初期スキャフォールド
+- Next.js 15プロジェクト構築
+- 15シナリオ定義（メール10 + 文書5）
+- 全ページ実装（トップ、メール、文書、エラー、404）
+- AI生成API（Claude Haiku連携）
+- MCP Server、Agent Card、llms.txt、robots.txt
+- UI: 生成フォーム、結果表示、コピー機能
+- SEO: メタデータ、サイトマップ、JSON-LD
+- レート制限（5回/日、Vercel KV）
+
+### Night 2 (2026-03-04) - UX改善・フィードバック・OGP
+- フィードバックAPI（GitHub Issues自動作成）
+- フィードバックウィジェット（ダークテーマ対応）
+- 残り生成回数の表示
+- シナリオページ間のクロスナビゲーション（メール⇔文書）
+- OGP画像自動生成（トップ + 全15シナリオ）
+- JSON-LD HowToスキーマ（全シナリオページ）
+
+### 次回やること
+- Vercelデプロイ設定
+- 実環境テスト（API動作確認）
+- パフォーマンス最適化
+
 ## Links
 
 - Website: https://bunsho.ezoai.jp

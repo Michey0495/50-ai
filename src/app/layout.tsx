@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
+import { FeedbackWidget } from "@/components/feedback-widget";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -117,6 +118,7 @@ export default function RootLayout({
             <p>&copy; 2026 文書AI by Ghostfee</p>
           </div>
         </footer>
+        <FeedbackWidget />
         <Toaster
           theme="dark"
           toastOptions={{

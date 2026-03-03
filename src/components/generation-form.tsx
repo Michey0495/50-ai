@@ -20,6 +20,7 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
   const [relationship, setRelationship] = useState<Relationship>("client");
   const [tone, setTone] = useState<Tone>("formal");
   const [result, setResult] = useState<string | null>(null);
+  const [remaining, setRemaining] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
   const updateField = (id: string, value: string) => {
@@ -64,6 +65,9 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
 
       const data = await res.json();
       setResult(data.content);
+      if (typeof data.remaining === "number") {
+        setRemaining(data.remaining);
+      }
       toast.success("生成完了");
     } catch {
       toast.error("エラーが発生しました。しばらくしてから再度お試しください。");
@@ -137,6 +141,11 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
         <Button type="submit" disabled={loading} size="lg" className="w-full">
           {loading ? "生成中..." : `${scenario.name}を生成する`}
         </Button>
+        {remaining !== null && (
+          <p className="text-center text-sm text-white/40">
+            本日の残り生成回数: {remaining}回
+          </p>
+        )}
       </form>
 
       {result && <GenerationResult content={result} />}
