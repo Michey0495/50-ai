@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -22,6 +22,14 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
   const [result, setResult] = useState<string | null>(null);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (result && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [result]);
 
   const updateField = (id: string, value: string) => {
     setFields((prev) => ({ ...prev, [id]: value }));
@@ -41,6 +49,8 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
 
     setLoading(true);
     setResult(null);
+    setElapsed(0);
+    const timer = setInterval(() => setElapsed((e) => e + 1), 1000);
 
     try {
       const res = await fetch("/api/generate", {
@@ -72,6 +82,7 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
     } catch {
       toast.error("エラーが発生しました。しばらくしてから再度お試しください。");
     } finally {
+      clearInterval(timer);
       setLoading(false);
     }
   };
@@ -146,7 +157,11 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
         </Card>
 
         <Button type="submit" disabled={loading} size="lg" className="w-full">
-          {loading ? "生成中..." : `${scenario.name}を生成する`}
+          {loading
+            ? `生成中...（${elapsed}秒）`
+            : result
+              ? "もう一度生成する"
+              : `${scenario.name}を生成する`}
         </Button>
         {remaining !== null && (
           <p className="text-center text-sm text-white/40">
@@ -155,7 +170,11 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
         )}
       </form>
 
-      {result && <GenerationResult content={result} />}
+      {result && (
+        <div ref={resultRef}>
+          <GenerationResult content={result} />
+        </div>
+      )}
     </div>
   );
 }

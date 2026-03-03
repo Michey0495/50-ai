@@ -19,7 +19,7 @@
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 (App Router)
+- **Framework**: Next.js 16 (App Router)
 - **Language**: TypeScript (strict)
 - **Styling**: Tailwind CSS
 - **AI**: Anthropic Claude API (Haiku)
@@ -81,10 +81,19 @@ npm run dev
 - OGP画像自動生成（トップ + 全15シナリオ）
 - JSON-LD HowToスキーマ（全シナリオページ）
 
+### Night 3 (2026-03-04) - セキュリティ・パフォーマンス・デプロイ設定
+- セキュリティヘッダー追加（middleware: X-Frame-Options, HSTS, X-Content-Type-Options等）
+- Google Analytics を Next.js Script コンポーネントに最適化（afterInteractive）
+- next.config.ts にキャッシュヘッダー設定（llms.txt, agent.json等）
+- vercel.json デプロイ設定（リージョン: hnd1, APIキャッシュ制御）
+- BreadcrumbList JSON-LD 構造化データ（全シナリオページ）
+- canonical URL を全シナリオページに追加
+- UX改善: 生成中の経過時間表示、「もう一度生成する」ボタン、結果自動スクロール
+
 ### 次回やること
-- Vercelデプロイ設定
+- Vercelデプロイ・DNS設定
 - 実環境テスト（API動作確認）
-- パフォーマンス最適化
+- middleware → proxy 移行（Next.js 16対応）
 
 ## Links
 

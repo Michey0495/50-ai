@@ -12,6 +12,8 @@ export async function generateStaticParams() {
   return EMAIL_SCENARIOS.map((s) => ({ scenario: s.id }));
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bunsho.ezoai.jp";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { scenario: scenarioId } = await params;
   const scenario = getScenario("email", scenarioId);
@@ -22,6 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: scenario.seoTitle,
       description: scenario.seoDescription,
+    },
+    alternates: {
+      canonical: `${SITE_URL}/email/${scenarioId}`,
     },
   };
 }
@@ -86,7 +91,22 @@ export default async function EmailScenarioPage({ params }: Props) {
         </div>
       </div>
 
-      {/* JSON-LD */}
+      {/* JSON-LD: BreadcrumbList */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "トップ", item: SITE_URL },
+              { "@type": "ListItem", position: 2, name: "メール", item: `${SITE_URL}/email/apology` },
+              { "@type": "ListItem", position: 3, name: scenario.name },
+            ],
+          }),
+        }}
+      />
+      {/* JSON-LD: HowTo */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
