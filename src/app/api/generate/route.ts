@@ -20,7 +20,7 @@ const TONE_CONTEXT: Record<Tone, string> = {
 };
 
 export async function POST(request: NextRequest) {
-  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  const ip = (request.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim();
   const { allowed, remaining } = await checkRateLimit(ip);
 
   if (!allowed) {

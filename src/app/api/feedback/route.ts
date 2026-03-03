@@ -8,6 +8,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Message required" }, { status: 400 });
     }
 
+    if (message.length > 2000) {
+      return NextResponse.json({ error: "Message too long" }, { status: 400 });
+    }
+
     const labels: Record<string, string> = {
       bug: "bug",
       feature: "enhancement",

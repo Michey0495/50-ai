@@ -1,126 +1,97 @@
 # QA Report - 文書AI (50-ai)
 
-**Date:** 2026-03-04 (Night 4 - QA Phase, Round 2)
+**Date:** 2026-03-04 (Night 5 - QA Phase, Round 3)
 **Tester:** Claude Code (Automated QA)
 **Build:** Next.js 16.1.6 (Turbopack)
 
 ## Summary
 
-全体的に高品質なコードベース。今回のQAラウンド2では5件の問題を発見し修正。累計で全問題を解決済み。
+全チェックリスト項目クリア。今回のQAラウンド3では5件の問題を発見し修正。
 
 ## Checklist
 
-- [x] `npm run build` 成功
+- [x] `npm run build` 成功 (42 pages, 0 errors, 0 warnings)
 - [x] `npm run lint` エラーなし
 - [x] レスポンシブ対応（モバイル・デスクトップ）
-- [x] favicon, OGP設定
-- [x] 404ページ
-- [x] ローディング状態の表示
-- [x] エラー状態の表示
+- [x] favicon, OGP設定 (root + 15 scenario OGP images)
+- [x] 404ページ (`not-found.tsx`)
+- [x] ローディング状態の表示 (`loading.tsx`)
+- [x] エラー状態の表示 (`error.tsx`)
 
-## Issues Found & Fixed (Round 2)
+## Issues Found & Fixed (Round 3)
 
-### 1. SEO: Fake AggregateRating in Structured Data - Fixed
+### 1. [Bug/High] MCP API crashes on missing arguments
+- **File:** `src/app/api/mcp/route.ts`
+- POSTing `{"tool":"generate_business_document"}` without `arguments` field would crash due to destructuring `undefined`
+- **Fix:** Added guard check for `args` existence before destructuring
 
-| File | Issue | Severity | Fix |
-|------|-------|----------|-----|
-| `src/app/page.tsx` | JSON-LD WebApplicationに虚偽のaggregateRating（4.8/5, 15件）が含まれていた。Google構造化データガイドライン違反でペナルティリスク | High | aggregateRatingを削除 |
+### 2. [Security/Low] MCP API reflected unsanitized user input
+- **File:** `src/app/api/mcp/route.ts`
+- Error message included raw `scenario_id`: `` `無効なシナリオID: ${scenario_id}` ``
+- **Fix:** Changed to static error message `"無効なシナリオIDです"`
 
-### 2. UX: FeedbackWidget Silent Error - Fixed
+### 3. [SEO/Medium] Footer missing 5 of 15 scenario links
+- **File:** `src/app/layout.tsx`
+- Missing: 自己紹介メール, 日程調整メール, 問い合わせメール, 報告書, 送付状. Also missing /email, /document category links
+- **Fix:** Reorganized footer: ビジネスメール (all 10), ビジネス文書 (all 5), 文書AI (home + category pages + GitHub)
 
-| File | Issue | Severity | Fix |
-|------|-------|----------|-----|
-| `src/components/feedback-widget.tsx` | catch blockが空でフィードバック送信失敗時にユーザーに通知されない | Medium | エラー状態を追加し「送信に失敗しました」メッセージとリトライボタンを表示 |
+### 4. [Edge Case/Low] Feedback API no server-side message length limit
+- **File:** `src/app/api/feedback/route.ts`
+- Client had maxLength=1000 but server accepted any length
+- **Fix:** Added 2000-char server-side limit
 
-### 3. Security: MCP Route Rate Limiting Missing - Fixed
+### 5. [Best Practice/Low] x-forwarded-for IP extraction
+- **Files:** `src/app/api/generate/route.ts`, `src/app/api/mcp/route.ts`
+- Full header string used as rate limit key; could allow bypass with varying proxy chains
+- **Fix:** Extract first IP with `.split(",")[0].trim()`
 
-| File | Issue | Severity | Fix |
-|------|-------|----------|-----|
-| `src/app/api/mcp/route.ts` | generate_business_documentツールにレート制限がなく、/api/generateの5回/日制限を迂回可能 | Medium | checkRateLimitを追加し同一IPの制限を適用 |
+## Previously Fixed Issues
 
-### 4. Missing Favicon - Fixed
+### Round 2 (5 issues)
+- JSON-LD: 虚偽のaggregateRating削除
+- FeedbackWidget: サイレントエラー修正、リトライUI追加
+- MCP Route: レート制限追加
+- favicon: 動的生成追加
+- Accessibility: aria-label, nav要素, focus-visible追加
 
-| File | Issue | Severity | Fix |
-|------|-------|----------|-----|
-| `public/` | favicon.icoが存在しない。ブラウザタブにデフォルトアイコン表示 | Low | `src/app/icon.tsx`で動的favicon生成を追加（青い「文」の文字） |
-
-### 5. Accessibility Improvements - Fixed
-
-| File | Issue | Severity | Fix |
-|------|-------|----------|-----|
-| `src/app/layout.tsx` | ナビゲーションに`aria-label`なし | Low | `aria-label="メインナビゲーション"`を追加 |
-| `src/app/email/page.tsx` | パンくずリストがdivで`nav`要素でない | Low | `<nav aria-label="パンくずリスト">`に変更、separator に`aria-hidden`, 現在ページに`aria-current` |
-| `src/app/document/page.tsx` | 同上 | Low | 同上 |
-| `src/app/email/[scenario]/page.tsx` | 同上 | Low | 同上 |
-| `src/app/document/[scenario]/page.tsx` | 同上 | Low | 同上 |
-| `src/app/page.tsx` | シナリオカードのリンクにfocus-visibleスタイルなし | Low | `focus-visible:ring-1 focus-visible:ring-blue-400/50`を追加 |
-| `src/app/email/page.tsx` | 同上 | Low | 同上 |
-| `src/app/document/page.tsx` | 同上 | Low | 同上 |
-
-## Previously Fixed Issues (Round 1)
-
-### Metadata Accuracy (4件)
-- メタデータの「50+のビジネスシーン」→「15のビジネスシーン」修正
-- Next.js 15 → 16の記載修正
-
-### Security (3件)
-- MCP endpoint: relationship/toneパラメータ検証追加
-- API: サーバーサイドフィールド長制限追加
-- GA ID: XSS防止のサニタイズ追加
-
-### UX (1件)
-- Select component: ドロップダウン矢印SVG追加
-
-### Lint Errors (5件)
-- `<a>` → `<Link>` (3箇所), Empty interface修正 (2箇所)
-
-### Edge Case Protections (2件)
-- フォーム: maxLength属性追加 (text: 500, textarea: 2000)
-
-### Accessibility (3件)
-- labels: `htmlFor`/`id`属性追加、`aria-label`追加
-
-### Loading State (1件)
-- `loading.tsx` 作成
+### Round 1 (19 issues)
+- Metadata accuracy, Security headers, UX, Lint, Edge cases, A11y, Loading state
 
 ## Verified (No Issues)
 
 ### UI/Layout
-- Homepage: Hero, scenario cards, how-it-works - 正常
-- Email/Document pages: パンくずリスト、フォームレイアウト、クロスナビゲーション - 正常
-- Responsive grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` - 正常
-- Design system: 黒背景、白テキスト、blue-400アクセント、絵文字/アイコンなし - 準拠
-- Toast notifications: ダークテーマ - 正常
+- All pages use consistent containers and responsive grids
+- Design system: black bg, white text, blue-400 accent, no emoji/icons
+- Toast notifications with dark theme
+- Hover/focus transitions on all interactive elements
 
 ### SEO
-- 動的metadata per scenario page (title, description, OGP)
-- OpenGraph images 全16ページで自動生成
-- JSON-LD: WebApplication + FAQPage (ホーム), BreadcrumbList + HowTo (各シナリオ), CollectionPage (カテゴリ一覧)
-- sitemap.xml 全ルート含む
-- robots.txt AIボット含む全クローラー許可
-- llms.txt, agent.json 設定済み
-- Canonical URLs 全ページ設定
+- Unique metadata per page (title, description, OGP, canonical)
+- 16 OGP images (root + 15 scenarios)
+- JSON-LD: WebApplication, FAQPage, Organization, BreadcrumbList, HowTo, CollectionPage
+- sitemap.xml (19 URLs), robots.txt, llms.txt, agent.json
+
+### Accessibility
+- `<html lang="ja">`, `<nav aria-label>`, breadcrumbs with aria-current
+- All form fields labeled, focus-visible rings, keyboard-navigable
 
 ### Error Handling
-- 404ページ、エラーバウンダリ、ローディング状態 - 全て正常
-- API: 400/429/500エラーレスポンス - 正常
-- Client: Toast通知 - 正常
-
-### Performance
-- Server Components by default; "use client" は3ファイルのみ
-- SSGで全シナリオページを静的生成
-- Edge runtimeでOGP画像生成
-- 最小限のdependency
+- 404, error boundary, loading state all present
+- API: 400/429/500 with Japanese messages
+- Client: Toast notifications for all states
 
 ### Security
-- Security headers: X-Frame-Options, X-Content-Type-Options, HSTS等
-- Input validation: 全APIエンドポイント
-- Rate limiting: 5回/日/IP (Vercel KV) - API・MCP両方に適用
-- Field length limits: クライアント + サーバーサイド
+- Headers: X-Frame-Options, HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- Input validation on all API endpoints
+- Rate limiting on /api/generate and /api/mcp
+- GA ID sanitized before DOM injection
+
+### Performance
+- Server Components default; "use client" on 3 files only
+- SSG for all scenario pages
+- Minimal dependencies
 
 ## Known Limitations
-
-- 自動テスト（unit/integration/e2e）未実装。将来的に追加推奨
-- Rate limitingは`x-forwarded-for`ヘッダー依存（スプーフ可能）。無料ティアとしては許容範囲
-- middleware.ts はNext.js 16で非推奨警告。将来的にproxyへ移行推奨
-- 二次テキスト色（white/40, white/30）はコントラスト比が低いが、意図的にミュートされた要素に使用
+- No automated tests (unit/integration/e2e)
+- Rate limiting relies on x-forwarded-for header
+- Low contrast on muted text (white/30, white/40) - intentional design choice

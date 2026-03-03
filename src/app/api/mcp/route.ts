@@ -78,7 +78,14 @@ export async function POST(request: NextRequest) {
     }
 
     if (tool === "generate_business_document") {
-      const ip = request.headers.get("x-forwarded-for") || "unknown";
+      if (!args || typeof args !== "object") {
+        return NextResponse.json(
+          { error: "arguments が必要です" },
+          { status: 400 }
+        );
+      }
+
+      const ip = (request.headers.get("x-forwarded-for") || "unknown").split(",")[0].trim();
       const { allowed } = await checkRateLimit(ip);
       if (!allowed) {
         return NextResponse.json(
@@ -103,7 +110,7 @@ export async function POST(request: NextRequest) {
 
       if (!scenario) {
         return NextResponse.json(
-          { error: `無効なシナリオID: ${scenario_id}` },
+          { error: "無効なシナリオIDです" },
           { status: 400 }
         );
       }
