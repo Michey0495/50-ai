@@ -1,12 +1,12 @@
 # QA Report - 文書AI (50-ai)
 
-**Date:** 2026-03-04 (Night 4 - QA Phase)
+**Date:** 2026-03-04 (Night 4 - QA Phase, Round 2)
 **Tester:** Claude Code (Automated QA)
 **Build:** Next.js 16.1.6 (Turbopack)
 
 ## Summary
 
-全体的に高品質なコードベース。重大なバグはなし。今回のQAでは正確性・セキュリティ・UXに関する6件の問題を発見し修正。
+全体的に高品質なコードベース。今回のQAラウンド2では5件の問題を発見し修正。累計で全問題を解決済み。
 
 ## Checklist
 
@@ -18,119 +18,109 @@
 - [x] ローディング状態の表示
 - [x] エラー状態の表示
 
-## Issues Found & Fixed (Today - Night 4)
+## Issues Found & Fixed (Round 2)
 
-### 1. Metadata Accuracy (4件) - Fixed
-
-| File | Issue | Fix |
-|------|-------|-----|
-| `src/app/layout.tsx` | メタデータに「50+のビジネスシーン」と記載されているが実際は15シナリオ | 「15のビジネスシーン」に修正 |
-| `public/llms.txt` | 同上 + 「Next.js 15」と記載されているがv16使用 | 「15のビジネスシーン」「Next.js 16」に修正 |
-| `public/.well-known/agent.json` | 「50+のビジネスシーン」と記載 | 「15のビジネスシーン」に修正 |
-| `src/app/api/mcp/route.ts` | MCPサーバー説明に「50+のシナリオ」 | 「15のシナリオ」に修正 |
-
-### 2. Security: MCP Endpoint Validation (1件) - Fixed
+### 1. SEO: Fake AggregateRating in Structured Data - Fixed
 
 | File | Issue | Severity | Fix |
 |------|-------|----------|-----|
-| `src/app/api/mcp/route.ts` | `relationship`/`tone`パラメータの検証なし、フィールド長制限なし | Medium | ホワイトリスト検証追加、`.slice(0, 2000)`でフィールド長制限追加 |
+| `src/app/page.tsx` | JSON-LD WebApplicationに虚偽のaggregateRating（4.8/5, 15件）が含まれていた。Google構造化データガイドライン違反でペナルティリスク | High | aggregateRatingを削除 |
 
-### 3. Security: GA ID Sanitization (1件) - Fixed
+### 2. UX: FeedbackWidget Silent Error - Fixed
 
 | File | Issue | Severity | Fix |
 |------|-------|----------|-----|
-| `src/app/layout.tsx` | `NEXT_PUBLIC_GA_ID`がインラインスクリプトに直接挿入（XSSリスク） | Low | 英数字とハイフンのみ許可する正規表現フィルター追加 |
+| `src/components/feedback-widget.tsx` | catch blockが空でフィードバック送信失敗時にユーザーに通知されない | Medium | エラー状態を追加し「送信に失敗しました」メッセージとリトライボタンを表示 |
 
-### 4. UX: Select Component (1件) - Fixed
+### 3. Security: MCP Route Rate Limiting Missing - Fixed
 
-| File | Issue | Fix |
-|------|-------|-----|
-| `src/components/ui/select.tsx` | `appearance-none`でドロップダウン矢印が非表示のまま代替インジケータなし | SVGのドロップダウン矢印を追加 |
+| File | Issue | Severity | Fix |
+|------|-------|----------|-----|
+| `src/app/api/mcp/route.ts` | generate_business_documentツールにレート制限がなく、/api/generateの5回/日制限を迂回可能 | Medium | checkRateLimitを追加し同一IPの制限を適用 |
 
-## Previously Fixed Issues (Night 3 QA)
+### 4. Missing Favicon - Fixed
+
+| File | Issue | Severity | Fix |
+|------|-------|----------|-----|
+| `public/` | favicon.icoが存在しない。ブラウザタブにデフォルトアイコン表示 | Low | `src/app/icon.tsx`で動的favicon生成を追加（青い「文」の文字） |
+
+### 5. Accessibility Improvements - Fixed
+
+| File | Issue | Severity | Fix |
+|------|-------|----------|-----|
+| `src/app/layout.tsx` | ナビゲーションに`aria-label`なし | Low | `aria-label="メインナビゲーション"`を追加 |
+| `src/app/email/page.tsx` | パンくずリストがdivで`nav`要素でない | Low | `<nav aria-label="パンくずリスト">`に変更、separator に`aria-hidden`, 現在ページに`aria-current` |
+| `src/app/document/page.tsx` | 同上 | Low | 同上 |
+| `src/app/email/[scenario]/page.tsx` | 同上 | Low | 同上 |
+| `src/app/document/[scenario]/page.tsx` | 同上 | Low | 同上 |
+| `src/app/page.tsx` | シナリオカードのリンクにfocus-visibleスタイルなし | Low | `focus-visible:ring-1 focus-visible:ring-blue-400/50`を追加 |
+| `src/app/email/page.tsx` | 同上 | Low | 同上 |
+| `src/app/document/page.tsx` | 同上 | Low | 同上 |
+
+## Previously Fixed Issues (Round 1)
+
+### Metadata Accuracy (4件)
+- メタデータの「50+のビジネスシーン」→「15のビジネスシーン」修正
+- Next.js 15 → 16の記載修正
+
+### Security (3件)
+- MCP endpoint: relationship/toneパラメータ検証追加
+- API: サーバーサイドフィールド長制限追加
+- GA ID: XSS防止のサニタイズ追加
+
+### UX (1件)
+- Select component: ドロップダウン矢印SVG追加
 
 ### Lint Errors (5件)
-- `<a>` tags → `<Link>` (3箇所)
-- Empty interface → type alias (2箇所)
-
-### Security Issues (2件)
-- `/api/generate`: relationship/tone パラメータ検証追加
-- `/api/feedback`: repoフィールドのホワイトリスト制限追加
+- `<a>` → `<Link>` (3箇所), Empty interface修正 (2箇所)
 
 ### Edge Case Protections (2件)
-- フォーム入力: maxLength属性追加 (text: 500, textarea: 2000)
-- API: サーバーサイドフィールド長制限 `.slice(0, 2000)` 追加
+- フォーム: maxLength属性追加 (text: 500, textarea: 2000)
 
 ### Accessibility (3件)
-- labels: `htmlFor`/`id`属性追加
-- feedback widget: `aria-label` 追加
+- labels: `htmlFor`/`id`属性追加、`aria-label`追加
 
 ### Loading State (1件)
-- `loading.tsx` 作成（スピナーアニメーション）
+- `loading.tsx` 作成
 
 ## Verified (No Issues)
 
 ### UI/Layout
-- Homepage: Hero section, scenario cards, how-it-works section all properly structured
-- Email/Document pages: Breadcrumb navigation, form layout, cross-navigation links
-- Responsive grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` pattern used correctly
-- Design system compliance: Black background, white text, blue-400 accent, no emojis/icons
-- Form components: Input/Textarea/Select with proper styling and focus states
-- Toast notifications: Dark theme, appropriate timing
+- Homepage: Hero, scenario cards, how-it-works - 正常
+- Email/Document pages: パンくずリスト、フォームレイアウト、クロスナビゲーション - 正常
+- Responsive grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` - 正常
+- Design system: 黒背景、白テキスト、blue-400アクセント、絵文字/アイコンなし - 準拠
+- Toast notifications: ダークテーマ - 正常
 
 ### SEO
-- Dynamic metadata per scenario page (title, description, OGP)
-- OpenGraph images auto-generated for all 16 pages (1 homepage + 15 scenarios)
-- JSON-LD structured data: `WebApplication` + `FAQPage` on homepage, `BreadcrumbList` + `HowTo` on scenario pages
-- Dynamic sitemap.xml with all routes (priority 1.0 homepage, 0.8 scenarios)
-- robots.txt allows all crawlers including AI bots
-- llms.txt and agent.json properly configured
-- Canonical URLs on all pages
-- Twitter Card: summary_large_image
+- 動的metadata per scenario page (title, description, OGP)
+- OpenGraph images 全16ページで自動生成
+- JSON-LD: WebApplication + FAQPage (ホーム), BreadcrumbList + HowTo (各シナリオ), CollectionPage (カテゴリ一覧)
+- sitemap.xml 全ルート含む
+- robots.txt AIボット含む全クローラー許可
+- llms.txt, agent.json 設定済み
+- Canonical URLs 全ページ設定
 
 ### Error Handling
-- 404 page (`not-found.tsx`) with link back to homepage
-- Error boundary (`error.tsx`) with retry button
-- API: 400 for invalid input, 429 for rate limit, 500 for server errors
-- Client-side: Toast notifications for all error/success states
-- Rate limit exceeded: Clear user-facing message
-
-### Accessibility
-- All form inputs have associated labels with `htmlFor`/`id`
-- Focus states: `focus-visible:ring-2` on buttons, `focus:ring-1` on inputs
-- Select component: Custom dropdown arrow indicator
-- Feedback widget: `aria-label` on interactive elements
-- Color contrast: Primary text is white on black (21:1 ratio)
-- Language attribute: `<html lang="ja">`
+- 404ページ、エラーバウンダリ、ローディング状態 - 全て正常
+- API: 400/429/500エラーレスポンス - 正常
+- Client: Toast通知 - 正常
 
 ### Performance
-- Server Components used by default; `"use client"` only for interactive components (3 files)
-- Static generation (SSG) for all scenario pages via `generateStaticParams`
-- Edge runtime for OGP image generation
-- `poweredByHeader: false` and `compress: true` in next.config
-- DNS prefetch enabled
-- Cache headers for static assets (86400s)
-- Minimal dependencies (no unnecessary packages)
-- No unnecessary re-renders (local state management)
+- Server Components by default; "use client" は3ファイルのみ
+- SSGで全シナリオページを静的生成
+- Edge runtimeでOGP画像生成
+- 最小限のdependency
 
 ### Security
-- Security headers: X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, HSTS
-- Input validation on all API endpoints (relationship, tone, scenarioId)
-- Field length limits (client + server side)
-- Rate limiting (5/day per IP via Vercel KV)
-- GitHub feedback repo allowlist
-- GA ID sanitization
-
-### Architecture
-- AI-First design: MCP Server, A2A Agent Card, llms.txt
-- Rate limiting via Vercel KV with graceful fallback
-- Feedback widget with GitHub Issues integration
-- Clean type definitions with TypeScript strict mode
+- Security headers: X-Frame-Options, X-Content-Type-Options, HSTS等
+- Input validation: 全APIエンドポイント
+- Rate limiting: 5回/日/IP (Vercel KV) - API・MCP両方に適用
+- Field length limits: クライアント + サーバーサイド
 
 ## Known Limitations
 
-- No automated tests (unit/integration/e2e). Recommended for future development.
-- Rate limiting relies on `x-forwarded-for` header (can be spoofed). Acceptable for free tier.
-- MCP endpoint does not have rate limiting. Consider adding for production.
-- middleware.ts deprecation warning in Next.js 16 (should migrate to proxy).
-- Secondary text colors (white/40, white/30) have lower contrast ratios but are used for intentionally muted elements.
+- 自動テスト（unit/integration/e2e）未実装。将来的に追加推奨
+- Rate limitingは`x-forwarded-for`ヘッダー依存（スプーフ可能）。無料ティアとしては許容範囲
+- middleware.ts はNext.js 16で非推奨警告。将来的にproxyへ移行推奨
+- 二次テキスト色（white/40, white/30）はコントラスト比が低いが、意図的にミュートされた要素に使用

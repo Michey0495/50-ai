@@ -7,15 +7,18 @@ export function FeedbackWidget() {
   const [type, setType] = useState<"bug" | "feature" | "other">("bug");
   const [message, setMessage] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState(false);
 
   const submit = async () => {
     if (!message.trim()) return;
+    setError(false);
     try {
-      await fetch("/api/feedback", {
+      const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, message, repo: "50-ai" }),
       });
+      if (!res.ok) throw new Error();
       setSent(true);
       setTimeout(() => {
         setOpen(false);
@@ -23,7 +26,7 @@ export function FeedbackWidget() {
         setMessage("");
       }, 2000);
     } catch {
-      // silently fail
+      setError(true);
     }
   };
 
@@ -54,6 +57,16 @@ export function FeedbackWidget() {
         <p className="text-blue-400 text-center py-4">
           送信しました
         </p>
+      ) : error ? (
+        <div className="text-center py-4">
+          <p className="text-red-400 mb-3">送信に失敗しました</p>
+          <button
+            onClick={() => setError(false)}
+            className="text-sm text-white/50 hover:text-white transition-colors duration-200"
+          >
+            もう一度試す
+          </button>
+        </div>
       ) : (
         <>
           <div className="flex gap-2 mb-3">

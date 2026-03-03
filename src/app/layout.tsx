@@ -105,7 +105,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <header className="border-b border-white/5">
-          <nav className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+          <nav aria-label="メインナビゲーション" className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
             <Link href="/" className="text-lg font-bold text-white hover:text-blue-400 transition-colors duration-200">
               文書AI
             </Link>

@@ -22,16 +22,16 @@ export const metadata: Metadata = {
 export default function DocumentIndexPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
-      <div className="mb-4 text-sm text-white/40">
+      <nav aria-label="パンくずリスト" className="mb-4 text-sm text-white/40">
         <Link
           href="/"
           className="hover:text-white transition-colors duration-200"
         >
           トップ
         </Link>
-        <span className="mx-2">/</span>
-        <span className="text-white/60">ビジネス文書</span>
-      </div>
+        <span className="mx-2" aria-hidden="true">/</span>
+        <span className="text-white/60" aria-current="page">ビジネス文書</span>
+      </nav>
 
       <h1 className="text-3xl sm:text-4xl font-bold text-white mb-4">
         ビジネス文書 テンプレート
@@ -42,7 +42,7 @@ export default function DocumentIndexPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
         {DOCUMENT_SCENARIOS.map((scenario) => (
-          <Link key={scenario.id} href={`/document/${scenario.id}`}>
+          <Link key={scenario.id} href={`/document/${scenario.id}`} className="rounded-xl focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400/50">
             <Card className="h-full hover:bg-white/8 hover:border-white/20 transition-all duration-200 cursor-pointer">
               <h2 className="text-lg font-bold text-white mb-2">
                 {scenario.name}

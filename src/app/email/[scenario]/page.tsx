@@ -38,17 +38,17 @@ export default async function EmailScenarioPage({ params }: Props) {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-12">
-      <div className="mb-4 text-sm text-white/40">
+      <nav aria-label="パンくずリスト" className="mb-4 text-sm text-white/40">
         <Link href="/" className="hover:text-white transition-colors duration-200">
           トップ
         </Link>
-        <span className="mx-2">/</span>
+        <span className="mx-2" aria-hidden="true">/</span>
         <Link href="/email" className="hover:text-white transition-colors duration-200">
           メール
         </Link>
-        <span className="mx-2">/</span>
-        <span className="text-white/60">{scenario.name}</span>
-      </div>
+        <span className="mx-2" aria-hidden="true">/</span>
+        <span className="text-white/60" aria-current="page">{scenario.name}</span>
+      </nav>
 
       <h1 className="text-3xl font-bold text-white mb-3">{scenario.name}</h1>
       <p className="text-white/60 mb-8 leading-relaxed">

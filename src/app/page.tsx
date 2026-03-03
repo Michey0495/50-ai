@@ -123,7 +123,7 @@ export default function Home() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {EMAIL_SCENARIOS.map((scenario) => (
-            <Link key={scenario.id} href={`/email/${scenario.id}`}>
+            <Link key={scenario.id} href={`/email/${scenario.id}`} className="rounded-xl focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400/50">
               <Card className="h-full hover:bg-white/8 hover:border-white/20 transition-all duration-200 cursor-pointer">
                 <h3 className="text-lg font-bold text-white mb-2">
                   {scenario.name}
@@ -147,7 +147,7 @@ export default function Home() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {DOCUMENT_SCENARIOS.map((scenario) => (
-            <Link key={scenario.id} href={`/document/${scenario.id}`}>
+            <Link key={scenario.id} href={`/document/${scenario.id}`} className="rounded-xl focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-400/50">
               <Card className="h-full hover:bg-white/8 hover:border-white/20 transition-all duration-200 cursor-pointer">
                 <h3 className="text-lg font-bold text-white mb-2">
                   {scenario.name}
@@ -240,12 +240,6 @@ export default function Home() {
               "関係性に応じた敬語自動調整",
               "登録不要で即利用可能",
             ],
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "4.8",
-              ratingCount: "15",
-              bestRating: "5",
-            },
           }),
         }}
       />

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { ALL_SCENARIOS } from "@/lib/scenarios";
+import { checkRateLimit } from "@/lib/rate-limit";
 import type { Relationship, Tone } from "@/lib/types";
 
 const anthropic = new Anthropic();
@@ -77,6 +78,15 @@ export async function POST(request: NextRequest) {
     }
 
     if (tool === "generate_business_document") {
+      const ip = request.headers.get("x-forwarded-for") || "unknown";
+      const { allowed } = await checkRateLimit(ip);
+      if (!allowed) {
+        return NextResponse.json(
+          { error: "本日の無料生成回数に達しました" },
+          { status: 429 }
+        );
+      }
+
       const { scenario_id, relationship, tone, fields } = args;
 
       const validRelationships: Relationship[] = ["boss", "client", "subordinate", "colleague"];
