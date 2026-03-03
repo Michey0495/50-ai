@@ -197,6 +197,90 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Who is this for */}
+      <section className="mb-20">
+        <h2 className="text-2xl font-bold text-white mb-8 text-center">
+          こんな方に使われています
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            {
+              who: "新入社員・若手社員",
+              problem: "上司や取引先への敬語メールに自信がない",
+              link: "/email/apology",
+            },
+            {
+              who: "中途入社・転職者",
+              problem: "新しい職場での挨拶・自己紹介メールの書き方がわからない",
+              link: "/email/greeting",
+            },
+            {
+              who: "管理職・マネージャー",
+              problem: "部下への指示メールや報告書のテンプレートが欲しい",
+              link: "/document/business-report",
+            },
+            {
+              who: "フリーランス・個人事業主",
+              problem: "クライアントへの催促や断りメールが苦手",
+              link: "/email/reminder",
+            },
+          ].map((item) => (
+            <Link
+              key={item.who}
+              href={item.link}
+              className="block p-5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/8 hover:border-white/20 transition-all duration-200 cursor-pointer"
+            >
+              <div className="text-sm text-blue-400 font-bold mb-1">
+                {item.who}
+              </div>
+              <p className="text-sm text-white/60">{item.problem}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ (visible) */}
+      <section className="mb-20">
+        <h2 className="text-2xl font-bold text-white mb-8 text-center">
+          よくある質問
+        </h2>
+        <div className="space-y-4 max-w-3xl mx-auto">
+          {[
+            {
+              q: "本当に無料ですか？",
+              a: "はい。アカウント登録不要で、1日5回まで完全無料でご利用いただけます。クレジットカードの登録も不要です。",
+            },
+            {
+              q: "ChatGPTとの違いは何ですか？",
+              a: "ChatGPTは汎用的な文章生成ツールですが、文書AIは日本のビジネスメールに特化しています。相手との関係性（上司・取引先・同僚）を選ぶだけで、適切な敬語レベル・構成・定型表現を自動で使い分けます。",
+            },
+            {
+              q: "入力した情報は保存されますか？",
+              a: "いいえ。入力内容や生成結果はサーバーに保存されません。プライバシーを重視した設計です。",
+            },
+            {
+              q: "スマートフォンでも使えますか？",
+              a: "はい。レスポンシブデザインで、スマートフォン・タブレット・PCすべてに対応しています。",
+            },
+          ].map((item) => (
+            <details
+              key={item.q}
+              className="group rounded-xl bg-white/5 border border-white/10"
+            >
+              <summary className="p-5 text-white font-bold cursor-pointer hover:text-blue-400 transition-colors duration-200 list-none flex items-center justify-between">
+                {item.q}
+                <span className="text-white/30 group-open:rotate-180 transition-transform duration-200 ml-4 shrink-0">
+                  ▼
+                </span>
+              </summary>
+              <div className="px-5 pb-5 text-sm text-white/60 leading-relaxed">
+                {item.a}
+              </div>
+            </details>
+          ))}
+        </div>
+      </section>
+
       {/* Bottom CTA */}
       <section className="text-center py-12 border-t border-white/5">
         <h2 className="text-2xl font-bold text-white mb-4">
@@ -289,6 +373,14 @@ export default function Home() {
                 acceptedAnswer: {
                   "@type": "Answer",
                   text: "いいえ。入力内容や生成されたテキストはサーバーに保存されません。生成結果はブラウザに返されるのみで、データの永続化は行いません。",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "スマートフォンでも使えますか？",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "はい。レスポンシブデザインで、スマートフォン・タブレット・PCすべてに対応しています。ブラウザからアクセスするだけでご利用いただけます。",
                 },
               },
             ],
