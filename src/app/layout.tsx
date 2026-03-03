@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | 文書AI",
   },
   description:
-    "50+のビジネスシーンに特化したAI文書生成。お詫び・依頼・催促・お礼メールから議事録・企画書まで、関係性に応じた敬語レベルで自動作成。無料で今すぐ使えます。",
+    "15のビジネスシーンに特化したAI文書生成。お詫び・依頼・催促・お礼メールから議事録・企画書まで、関係性に応じた敬語レベルで自動作成。無料で今すぐ使えます。",
   keywords: [
     "ビジネスメール テンプレート",
     "お詫び メール テンプレート",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     siteName: "文書AI",
     title: "文書AI - ビジネスメール・文書をAIが自動生成",
     description:
-      "50+のビジネスシーンに特化したAI文書生成。関係性に応じた敬語レベルで自動作成。無料で今すぐ使えます。",
+      "15のビジネスシーンに特化したAI文書生成。関係性に応じた敬語レベルで自動作成。無料で今すぐ使えます。",
   },
   twitter: {
     card: "summary_large_image",
@@ -85,7 +85,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gaId = process.env.NEXT_PUBLIC_GA_ID?.replace(/[^a-zA-Z0-9-]/g, "");
 
   return (
     <html lang="ja">

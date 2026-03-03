@@ -51,7 +51,7 @@ export async function GET() {
     name: "文書AI MCP Server",
     version: "1.0.0",
     description:
-      "ビジネスメール・文書をAIで自動生成するMCPサーバー。50+のシナリオに対応。",
+      "ビジネスメール・文書をAIで自動生成するMCPサーバー。15のシナリオに対応。",
     tools: TOOLS,
   });
 }
@@ -78,6 +78,17 @@ export async function POST(request: NextRequest) {
 
     if (tool === "generate_business_document") {
       const { scenario_id, relationship, tone, fields } = args;
+
+      const validRelationships: Relationship[] = ["boss", "client", "subordinate", "colleague"];
+      const validTones: Tone[] = ["formal", "semi-formal", "casual"];
+
+      if (!validRelationships.includes(relationship)) {
+        return NextResponse.json({ error: "無効な関係性です" }, { status: 400 });
+      }
+      if (!validTones.includes(tone)) {
+        return NextResponse.json({ error: "無効なトーンです" }, { status: 400 });
+      }
+
       const scenario = ALL_SCENARIOS.find((s) => s.id === scenario_id);
 
       if (!scenario) {
@@ -89,7 +100,7 @@ export async function POST(request: NextRequest) {
 
       const fieldsDescription = scenario.fields
         .map((f) => {
-          const value = fields[f.id];
+          const value = fields[f.id]?.slice(0, 2000);
           return value ? `${f.label}: ${value}` : null;
         })
         .filter(Boolean)

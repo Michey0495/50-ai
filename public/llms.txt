@@ -1,6 +1,6 @@
 # 文書AI - bunsho.ezoai.jp
 
-> 50+のビジネスシーンに特化したAI文書生成プラットフォーム
+> 15のビジネスシーンに特化したAI文書生成プラットフォーム
 
 ## Overview
 文書AIは、日本のビジネスメール・文書をAIで自動生成するWebアプリケーションです。
@@ -17,7 +17,7 @@
 - 無料5回/日（登録不要）
 
 ## Technical Stack
-- Framework: Next.js 15 (App Router)
+- Framework: Next.js 16 (App Router)
 - Language: TypeScript
 - Styling: Tailwind CSS + shadcn/ui
 - Hosting: Vercel
