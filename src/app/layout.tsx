@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import { Toaster } from "sonner";
 import { FeedbackWidget } from "@/components/feedback-widget";
 import "./globals.css";
@@ -99,16 +100,16 @@ export default function RootLayout({
       >
         <header className="border-b border-white/5">
           <nav className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-            <a href="/" className="text-lg font-bold text-white hover:text-blue-400 transition-colors duration-200">
+            <Link href="/" className="text-lg font-bold text-white hover:text-blue-400 transition-colors duration-200">
               文書AI
-            </a>
+            </Link>
             <div className="flex items-center gap-6 text-sm text-white/50">
-              <a href="/email/apology" className="hover:text-white transition-colors duration-200">
+              <Link href="/email/apology" className="hover:text-white transition-colors duration-200">
                 メール
-              </a>
-              <a href="/document/minutes" className="hover:text-white transition-colors duration-200">
+              </Link>
+              <Link href="/document/minutes" className="hover:text-white transition-colors duration-200">
                 文書
-              </a>
+              </Link>
             </div>
           </nav>
         </header>

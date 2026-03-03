@@ -32,6 +32,17 @@ export async function POST(request: NextRequest) {
 
   try {
     const body: GenerateRequest = await request.json();
+
+    const validRelationships: Relationship[] = ["boss", "client", "subordinate", "colleague"];
+    const validTones: Tone[] = ["formal", "semi-formal", "casual"];
+
+    if (!validRelationships.includes(body.relationship)) {
+      return NextResponse.json({ error: "無効な関係性です" }, { status: 400 });
+    }
+    if (!validTones.includes(body.tone)) {
+      return NextResponse.json({ error: "無効なトーンです" }, { status: 400 });
+    }
+
     const scenario = ALL_SCENARIOS.find((s) => s.id === body.scenarioId);
 
     if (!scenario) {
@@ -43,7 +54,7 @@ export async function POST(request: NextRequest) {
 
     const fieldsDescription = scenario.fields
       .map((f) => {
-        const value = body.fields[f.id];
+        const value = body.fields[f.id]?.slice(0, 2000);
         return value ? `${f.label}: ${value}` : null;
       })
       .filter(Boolean)

@@ -44,6 +44,7 @@ export function FeedbackWidget() {
         <h3 className="font-bold text-white">フィードバック</h3>
         <button
           onClick={() => setOpen(false)}
+          aria-label="閉じる"
           className="text-white/40 hover:text-white transition-colors duration-200 text-lg leading-none"
         >
           &times;
@@ -74,6 +75,8 @@ export function FeedbackWidget() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="ご意見をお聞かせください..."
+            aria-label="フィードバック内容"
+            maxLength={1000}
             className="w-full bg-white/5 border border-white/10 rounded-lg p-2 text-sm text-white placeholder:text-white/30 h-24 resize-none mb-3 focus:outline-none focus:ring-1 focus:ring-blue-400/30"
           />
           <button

@@ -83,10 +83,11 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
           <div className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-sm text-white/70">
+                <label htmlFor="relationship" className="block text-sm text-white/70">
                   相手との関係性
                 </label>
                 <Select
+                  id="relationship"
                   options={RELATIONSHIPS}
                   value={relationship}
                   onChange={(e) =>
@@ -95,8 +96,9 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-sm text-white/70">トーン</label>
+                <label htmlFor="tone" className="block text-sm text-white/70">トーン</label>
                 <Select
+                  id="tone"
                   options={TONES}
                   value={tone}
                   onChange={(e) => setTone(e.target.value as Tone)}
@@ -106,7 +108,7 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
 
             {scenario.fields.map((field) => (
               <div key={field.id} className="space-y-2">
-                <label className="block text-sm text-white/70">
+                <label htmlFor={`field-${field.id}`} className="block text-sm text-white/70">
                   {field.label}
                   {field.required && (
                     <span className="text-blue-400 ml-1">*</span>
@@ -114,12 +116,15 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
                 </label>
                 {field.type === "textarea" ? (
                   <Textarea
+                    id={`field-${field.id}`}
                     placeholder={field.placeholder}
                     value={fields[field.id] || ""}
                     onChange={(e) => updateField(field.id, e.target.value)}
+                    maxLength={2000}
                   />
                 ) : field.type === "select" && field.options ? (
                   <Select
+                    id={`field-${field.id}`}
                     options={field.options}
                     placeholder="選択してください"
                     value={fields[field.id] || ""}
@@ -127,10 +132,12 @@ export function GenerationForm({ scenario }: GenerationFormProps) {
                   />
                 ) : (
                   <Input
+                    id={`field-${field.id}`}
                     type="text"
                     placeholder={field.placeholder}
                     value={fields[field.id] || ""}
                     onChange={(e) => updateField(field.id, e.target.value)}
+                    maxLength={500}
                   />
                 )}
               </div>

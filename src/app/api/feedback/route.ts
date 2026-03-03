@@ -18,7 +18,8 @@ export async function POST(request: NextRequest) {
     const body = `## User Feedback\n\n**Type:** ${type}\n\n**Message:**\n${message}\n\n---\n*Auto-created from in-app feedback widget*`;
 
     const token = process.env.GITHUB_TOKEN;
-    const repoName = repo || "50-ai";
+    const allowedRepos = ["50-ai"];
+    const repoName = allowedRepos.includes(repo) ? repo : "50-ai";
 
     if (token) {
       try {
