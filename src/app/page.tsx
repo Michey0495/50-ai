@@ -7,15 +7,25 @@ export default function Home() {
     <div className="max-w-5xl mx-auto px-4 py-16">
       {/* Hero */}
       <section className="text-center mb-20">
-        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
-          ビジネスメール・文書を
-          <br />
-          <span className="text-blue-400">AIが即座に作成</span>
-        </h1>
-        <p className="text-lg text-white/60 max-w-2xl mx-auto leading-relaxed mb-10">
-          シナリオを選び、最小限の情報を入力するだけ。
-          関係性に応じた敬語レベルで、適切なビジネス文書をAIが自動生成します。
+        <p className="text-sm text-blue-400/80 mb-4 tracking-wide">
+          15のビジネスシーンに対応 / 登録不要 / 無料
         </p>
+        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-tight">
+          「敬語、これで合ってる？」を
+          <br />
+          <span className="text-blue-400">AIが5秒で解決</span>
+        </h1>
+        <p className="text-lg text-white/60 max-w-2xl mx-auto leading-relaxed mb-8">
+          上司・取引先・同僚——相手との関係性を選ぶだけで、
+          敬語レベルまで完璧なビジネスメール・文書をAIが自動生成。
+          もう書き方で悩む時間は不要です。
+        </p>
+        <Link
+          href="/email/apology"
+          className="inline-block px-8 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-lg transition-all duration-200 mb-8"
+        >
+          今すぐ試す（無料）
+        </Link>
         <div className="flex items-center justify-center gap-3 text-sm text-white/40">
           <span className="px-3 py-1 rounded-full border border-white/10 bg-white/5">
             無料 5回/日
@@ -113,7 +123,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* JSON-LD */}
+      {/* JSON-LD: WebApplication */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -123,7 +133,7 @@ export default function Home() {
             name: "文書AI",
             url: "https://bunsho.ezoai.jp",
             description:
-              "50+のビジネスシーンに特化したAI文書生成プラットフォーム",
+              "15のビジネスシーンに特化したAI文書生成。関係性に応じた敬語レベルで自動作成。",
             applicationCategory: "BusinessApplication",
             operatingSystem: "All",
             offers: {
@@ -131,6 +141,51 @@ export default function Home() {
               price: "0",
               priceCurrency: "JPY",
             },
+            featureList: [
+              "お詫びメール自動生成",
+              "依頼メール自動生成",
+              "催促メール自動生成",
+              "議事録自動生成",
+              "企画書自動生成",
+              "関係性に応じた敬語自動調整",
+              "登録不要で即利用可能",
+            ],
+          }),
+        }}
+      />
+      {/* JSON-LD: FAQPage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "文書AIは無料で使えますか？",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "はい、登録不要で1日5回まで無料でご利用いただけます。",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "どのようなビジネスメールを作成できますか？",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "お詫び、依頼、催促、お礼、報告、断り、挨拶、自己紹介、日程調整、問い合わせの10種類のメールと、議事録、企画書、報告書、始末書、送付状の5種類の文書を作成できます。",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "敬語レベルはどのように調整されますか？",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "相手との関係性（上司、取引先、部下、同僚）を選択するだけで、AIが適切な敬語レベルを自動で判断し、文書を生成します。",
+                },
+              },
+            ],
           }),
         }}
       />
