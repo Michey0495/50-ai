@@ -99,6 +99,11 @@ npm run dev
 - サイトマップに /email, /document を追加（priority: 0.9）
 - llms.txt に全ページ構造を追記
 
+### Night 5 (2026-03-04) - Next.js 16対応・ビルド最適化
+- middleware.ts を廃止し、セキュリティヘッダーを next.config.ts に統合（Next.js 16 推奨構成）
+- OGP画像のedge runtime宣言を削除（静的生成に変更、ビルド高速化）
+- ビルド警告ゼロ達成
+
 ### 次回やること
 - Vercelデプロイ・DNS設定
 - 実環境テスト（API動作確認）
