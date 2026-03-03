@@ -23,10 +23,18 @@
 - Hosting: Vercel
 - AI: Anthropic Claude API
 
+## Pages
+- /: トップページ（サービス概要、シナリオ一覧）
+- /email: ビジネスメール テンプレート一覧
+- /document: ビジネス文書 テンプレート一覧
+- /email/[scenario]: 各メールシナリオの生成ページ（apology, request, reminder, thanks, report, rejection, greeting, introduction, schedule, inquiry）
+- /document/[scenario]: 各文書シナリオの生成ページ（minutes, proposal, business-report, incident-report, cover-letter）
+
 ## API Endpoints
 - POST /api/generate - ビジネスメール・文書の生成
 - GET /api/mcp - MCPサーバー情報（ツール定義）
 - POST /api/mcp - MCPツール実行
+- POST /api/feedback - フィードバック送信
 
 ## MCP Server
 エンドポイント: https://bunsho.ezoai.jp/api/mcp

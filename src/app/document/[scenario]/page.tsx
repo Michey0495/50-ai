@@ -43,7 +43,9 @@ export default async function DocumentScenarioPage({ params }: Props) {
           トップ
         </Link>
         <span className="mx-2">/</span>
-        <span>文書</span>
+        <Link href="/document" className="hover:text-white transition-colors duration-200">
+          文書
+        </Link>
         <span className="mx-2">/</span>
         <span className="text-white/60">{scenario.name}</span>
       </div>
@@ -100,7 +102,7 @@ export default async function DocumentScenarioPage({ params }: Props) {
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "トップ", item: SITE_URL },
-              { "@type": "ListItem", position: 2, name: "文書", item: `${SITE_URL}/document/minutes` },
+              { "@type": "ListItem", position: 2, name: "文書", item: `${SITE_URL}/document` },
               { "@type": "ListItem", position: 3, name: scenario.name },
             ],
           }),

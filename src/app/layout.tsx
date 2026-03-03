@@ -110,10 +110,10 @@ export default function RootLayout({
               文書AI
             </Link>
             <div className="flex items-center gap-6 text-sm text-white/50">
-              <Link href="/email/apology" className="hover:text-white transition-colors duration-200">
+              <Link href="/email" className="hover:text-white transition-colors duration-200">
                 メール
               </Link>
-              <Link href="/document/minutes" className="hover:text-white transition-colors duration-200">
+              <Link href="/document" className="hover:text-white transition-colors duration-200">
                 文書
               </Link>
             </div>

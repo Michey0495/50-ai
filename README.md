@@ -90,10 +90,18 @@ npm run dev
 - canonical URL を全シナリオページに追加
 - UX改善: 生成中の経過時間表示、「もう一度生成する」ボタン、結果自動スクロール
 
+### Night 4 (2026-03-04) - カテゴリページ・SEO構造改善
+- /email カテゴリランディングページ新設（メール一覧 + JSON-LD CollectionPage）
+- /document カテゴリランディングページ新設（文書一覧 + JSON-LD CollectionPage）
+- ヘッダーナビゲーションをカテゴリページにリンク変更
+- パンくずリスト（BreadcrumbList）をカテゴリURLに修正（/email, /document）
+- シナリオページのパンくずリンクをクリック可能に
+- サイトマップに /email, /document を追加（priority: 0.9）
+- llms.txt に全ページ構造を追記
+
 ### 次回やること
 - Vercelデプロイ・DNS設定
 - 実環境テスト（API動作確認）
-- middleware → proxy 移行（Next.js 16対応）
 
 ## Links
 

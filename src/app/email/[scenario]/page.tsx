@@ -43,7 +43,9 @@ export default async function EmailScenarioPage({ params }: Props) {
           トップ
         </Link>
         <span className="mx-2">/</span>
-        <span>メール</span>
+        <Link href="/email" className="hover:text-white transition-colors duration-200">
+          メール
+        </Link>
         <span className="mx-2">/</span>
         <span className="text-white/60">{scenario.name}</span>
       </div>
@@ -100,7 +102,7 @@ export default async function EmailScenarioPage({ params }: Props) {
             "@type": "BreadcrumbList",
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "トップ", item: SITE_URL },
-              { "@type": "ListItem", position: 2, name: "メール", item: `${SITE_URL}/email/apology` },
+              { "@type": "ListItem", position: 2, name: "メール", item: `${SITE_URL}/email` },
               { "@type": "ListItem", position: 3, name: scenario.name },
             ],
           }),
