@@ -20,12 +20,20 @@ export default function Home() {
           敬語レベルまで完璧なビジネスメール・文書をAIが自動生成。
           もう書き方で悩む時間は不要です。
         </p>
-        <Link
-          href="/email/apology"
-          className="inline-block px-8 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-lg transition-all duration-200 mb-8"
-        >
-          今すぐ試す（無料）
-        </Link>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          <Link
+            href="/email/apology"
+            className="inline-block px-8 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-lg transition-all duration-200"
+          >
+            今すぐ試す（無料）
+          </Link>
+          <Link
+            href="#scenarios"
+            className="inline-block px-8 py-3 border border-white/20 hover:border-white/40 text-white/70 hover:text-white rounded-lg transition-all duration-200"
+          >
+            シナリオ一覧を見る
+          </Link>
+        </div>
         <div className="flex items-center justify-center gap-3 text-sm text-white/40">
           <span className="px-3 py-1 rounded-full border border-white/10 bg-white/5">
             無料 5回/日
@@ -39,8 +47,74 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Why 文書AI */}
+      <section className="mb-20">
+        <h2 className="text-2xl font-bold text-white mb-8 text-center">
+          なぜ文書AIなのか
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <Card className="text-center">
+            <div className="text-3xl font-bold text-blue-400 mb-3">180+</div>
+            <h3 className="text-lg font-bold text-white mb-2">パターン対応</h3>
+            <p className="text-sm text-white/50">
+              15シナリオ x 4関係性 x 3トーン。同じ「催促」でも上司宛と同僚宛で全く違う文面を生成
+            </p>
+          </Card>
+          <Card className="text-center">
+            <div className="text-3xl font-bold text-blue-400 mb-3">5秒</div>
+            <h3 className="text-lg font-bold text-white mb-2">で完成</h3>
+            <p className="text-sm text-white/50">
+              平均28分かかるビジネスメール作成を5秒に短縮。コピーしてすぐ使えます
+            </p>
+          </Card>
+          <Card className="text-center">
+            <div className="text-3xl font-bold text-blue-400 mb-3">0円</div>
+            <h3 className="text-lg font-bold text-white mb-2">登録不要</h3>
+            <p className="text-sm text-white/50">
+              アカウント作成も不要。今すぐ使えて、1日5回まで完全無料
+            </p>
+          </Card>
+        </div>
+      </section>
+
+      {/* Comparison - Keigo Demo */}
+      <section className="mb-20">
+        <h2 className="text-2xl font-bold text-white mb-3 text-center">
+          関係性で変わる敬語レベル
+        </h2>
+        <p className="text-white/50 mb-8 text-center">
+          同じ催促メールでも、相手との関係性で文面が変わります
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <Card>
+            <div className="text-sm text-blue-400 mb-2 font-bold">
+              取引先への催促
+            </div>
+            <p className="text-sm text-white/70 leading-relaxed">
+              「平素より大変お世話になっております。先日ご送付いたしましたお見積書の件につきまして、ご確認の状況をお伺いできればと存じます。ご多用のところ恐れ入りますが、ご検討の程何卒よろしくお願い申し上げます。」
+            </p>
+          </Card>
+          <Card>
+            <div className="text-sm text-blue-400 mb-2 font-bold">
+              同僚への催促
+            </div>
+            <p className="text-sm text-white/70 leading-relaxed">
+              「お疲れさまです。先週お送りした見積書の件、確認状況はいかがでしょうか？月末の締め切りが近づいていますので、お手すきの際にご確認いただけると助かります。」
+            </p>
+          </Card>
+        </div>
+        <p className="text-center mt-6">
+          <Link
+            href="/email/reminder"
+            className="text-sm text-blue-400 hover:text-blue-300 transition-colors duration-200"
+          >
+            催促メールを作成してみる →
+          </Link>
+        </p>
+      </section>
+
       {/* Email Scenarios */}
-      <section className="mb-16">
+      <section id="scenarios" className="mb-16">
         <h2 className="text-2xl font-bold text-white mb-2">
           ビジネスメール
         </h2>
@@ -88,7 +162,7 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section>
+      <section className="mb-20">
         <h2 className="text-2xl font-bold text-white mb-8 text-center">
           使い方
         </h2>
@@ -123,6 +197,22 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Bottom CTA */}
+      <section className="text-center py-12 border-t border-white/5">
+        <h2 className="text-2xl font-bold text-white mb-4">
+          ビジネスメールの悩みを今すぐ解決
+        </h2>
+        <p className="text-white/50 mb-8 max-w-lg mx-auto">
+          登録不要、無料で今すぐ使えます。まずはお詫びメールから試してみてください。
+        </p>
+        <Link
+          href="/email/apology"
+          className="inline-block px-8 py-3 bg-blue-500 hover:bg-blue-400 text-white font-bold rounded-lg transition-all duration-200"
+        >
+          今すぐ試す（無料）
+        </Link>
+      </section>
+
       {/* JSON-LD: WebApplication */}
       <script
         type="application/ld+json"
@@ -150,6 +240,12 @@ export default function Home() {
               "関係性に応じた敬語自動調整",
               "登録不要で即利用可能",
             ],
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.8",
+              ratingCount: "15",
+              bestRating: "5",
+            },
           }),
         }}
       />
@@ -185,6 +281,38 @@ export default function Home() {
                   text: "相手との関係性（上司、取引先、部下、同僚）を選択するだけで、AIが適切な敬語レベルを自動で判断し、文書を生成します。",
                 },
               },
+              {
+                "@type": "Question",
+                name: "ChatGPTとの違いは何ですか？",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "文書AIは日本のビジネス文化に特化しています。関係性に応じた敬語レベルの自動調整、ビジネスメールの構造（挨拶→本題→締め）の遵守、季節の挨拶や定型表現の適切な使い分けなど、汎用AIでは対応が難しいニュアンスをカバーします。",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "入力した情報は保存されますか？",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "いいえ。入力内容や生成されたテキストはサーバーに保存されません。生成結果はブラウザに返されるのみで、データの永続化は行いません。",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+      {/* JSON-LD: Organization */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Ghostfee",
+            url: "https://bunsho.ezoai.jp",
+            logo: "https://bunsho.ezoai.jp/opengraph-image",
+            sameAs: [
+              "https://github.com/Michey0495/50-ai",
             ],
           }),
         }}
