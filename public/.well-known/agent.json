@@ -1,0 +1,43 @@
+{
+  "name": "文書AI",
+  "description": "50+のビジネスシーンに特化したAI文書生成エージェント。ビジネスメール・文書を関係性に応じた敬語レベルで自動生成します。",
+  "url": "https://bunsho.ezoai.jp",
+  "version": "1.0.0",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false
+  },
+  "provider": {
+    "organization": "Ghostfee",
+    "url": "https://github.com/Michey0495"
+  },
+  "documentationUrl": "https://bunsho.ezoai.jp/llms.txt",
+  "authentication": {
+    "schemes": ["none"]
+  },
+  "defaultInputModes": ["text"],
+  "defaultOutputModes": ["text"],
+  "skills": [
+    {
+      "id": "generate_business_document",
+      "name": "ビジネス文書生成",
+      "description": "ビジネスメール・文書をAIで自動生成。お詫び、依頼、催促、お礼、報告、断り、挨拶、議事録、企画書、報告書、始末書、送付状に対応。関係性に応じた敬語レベル自動調整。",
+      "tags": ["business", "email", "document", "japanese", "keigo"],
+      "examples": [
+        "取引先へのお詫びメールを作成して",
+        "上司への報告メールを書いて",
+        "議事録を整形して",
+        "企画書を作成して"
+      ],
+      "uri": "https://bunsho.ezoai.jp/api/mcp"
+    },
+    {
+      "id": "list_scenarios",
+      "name": "シナリオ一覧",
+      "description": "利用可能なビジネス文書テンプレートの一覧を取得",
+      "tags": ["list", "scenarios"],
+      "examples": ["利用可能なテンプレートを教えて"],
+      "uri": "https://bunsho.ezoai.jp/api/mcp"
+    }
+  ]
+}

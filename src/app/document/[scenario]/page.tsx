@@ -1,0 +1,72 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { GenerationForm } from "@/components/generation-form";
+import { getScenario, DOCUMENT_SCENARIOS } from "@/lib/scenarios";
+import Link from "next/link";
+
+interface Props {
+  params: Promise<{ scenario: string }>;
+}
+
+export async function generateStaticParams() {
+  return DOCUMENT_SCENARIOS.map((s) => ({ scenario: s.id }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { scenario: scenarioId } = await params;
+  const scenario = getScenario("document", scenarioId);
+  if (!scenario) return {};
+  return {
+    title: scenario.seoTitle,
+    description: scenario.seoDescription,
+    openGraph: {
+      title: scenario.seoTitle,
+      description: scenario.seoDescription,
+    },
+  };
+}
+
+export default async function DocumentScenarioPage({ params }: Props) {
+  const { scenario: scenarioId } = await params;
+  const scenario = getScenario("document", scenarioId);
+  if (!scenario) notFound();
+
+  return (
+    <div className="max-w-3xl mx-auto px-4 py-12">
+      <div className="mb-4 text-sm text-white/40">
+        <Link href="/" className="hover:text-white transition-colors duration-200">
+          トップ
+        </Link>
+        <span className="mx-2">/</span>
+        <span>文書</span>
+        <span className="mx-2">/</span>
+        <span className="text-white/60">{scenario.name}</span>
+      </div>
+
+      <h1 className="text-3xl font-bold text-white mb-3">{scenario.name}</h1>
+      <p className="text-white/60 mb-8 leading-relaxed">
+        {scenario.description}。関係性とトーンを選んで、必要な情報を入力してください。
+      </p>
+
+      <GenerationForm scenario={scenario} />
+
+      {/* Sidebar: other scenarios */}
+      <div className="mt-16 border-t border-white/5 pt-8">
+        <h2 className="text-lg font-bold text-white mb-4">
+          他の文書テンプレート
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {DOCUMENT_SCENARIOS.filter((s) => s.id !== scenarioId).map((s) => (
+            <Link
+              key={s.id}
+              href={`/document/${s.id}`}
+              className="block p-3 rounded-lg bg-white/5 border border-white/10 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-all duration-200"
+            >
+              {s.name}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

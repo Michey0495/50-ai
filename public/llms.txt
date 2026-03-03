@@ -1,0 +1,44 @@
+# 文書AI - bunsho.ezoai.jp
+
+> 50+のビジネスシーンに特化したAI文書生成プラットフォーム
+
+## Overview
+文書AIは、日本のビジネスメール・文書をAIで自動生成するWebアプリケーションです。
+お詫び、依頼、催促、お礼などのビジネスメールから、議事録、企画書、報告書などのビジネス文書まで、
+関係性（上司/取引先/部下/同僚）に応じた敬語レベルで適切な文書を即座に生成します。
+日本のビジネス文化（敬語、季節挨拶、関係性による言葉遣い）に完全特化しています。
+
+## Features
+- ビジネスメール生成: お詫び, 依頼, 催促, お礼, 報告, 断り, 挨拶, 自己紹介, 日程調整, 問い合わせ
+- ビジネス文書生成: 議事録, 企画書, 報告書, 始末書, 送付状
+- 関係性に応じた敬語自動調整（上司/取引先/部下/同僚）
+- トーン設定（フォーマル/ややフォーマル/カジュアル）
+- ワンクリックコピー
+- 無料5回/日（登録不要）
+
+## Technical Stack
+- Framework: Next.js 15 (App Router)
+- Language: TypeScript
+- Styling: Tailwind CSS + shadcn/ui
+- Hosting: Vercel
+- AI: Anthropic Claude API
+
+## API Endpoints
+- POST /api/generate - ビジネスメール・文書の生成
+- GET /api/mcp - MCPサーバー情報（ツール定義）
+- POST /api/mcp - MCPツール実行
+
+## MCP Server
+エンドポイント: https://bunsho.ezoai.jp/api/mcp
+利用可能なツール:
+- generate_business_document: ビジネスメール・文書を生成
+- list_scenarios: 利用可能なシナリオ一覧を取得
+
+## Links
+- Website: https://bunsho.ezoai.jp
+- GitHub: https://github.com/Michey0495/50-ai
+- Agent Card: https://bunsho.ezoai.jp/.well-known/agent.json
+
+## Contact
+- Developer: Ghostfee
+- GitHub: https://github.com/Michey0495
